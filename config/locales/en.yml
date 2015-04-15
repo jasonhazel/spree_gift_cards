@@ -3,3 +3,8 @@
 
 en:
   hello: "Hello world"
+  spree:
+    gift_cards: "Gift Cards"
+    listing_gift_cards: "Gift Cards"
+    my_gift_cards: "My Gift Cards"
+
