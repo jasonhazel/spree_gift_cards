@@ -1,0 +1,11 @@
+.alpha.twelve.columns
+  ul
+    li.field.alpha.two.columns
+    li.field.alpha.four.columns
+      = f.label :user_id, 'User'
+      br
+      = f.select :user_id, @users, {}, class: 'select2'
+    li.field.alpha.two.columns
+      = f.label :amount
+      = f.number_field :amount, size: 16
+  br
