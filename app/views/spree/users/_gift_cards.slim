@@ -1,19 +1,22 @@
  div.account-my-gift-cards
   h3.pull-left
     = Spree.t(:my_gift_cards)
-  = button_to 'Redeem Gift Card', '#', class: 'pull-right'
+  = render partial: 'spree/users/redeem'
   div.clearfix
+  - if @user.gift_cards.active.count > 0 
+    table.order-summary 
+      thead
+        th Code
+        th Amount
+        th Purchased
+      - @user.gift_cards.active.each do |gc|
+        tr
+          td = gc.code 
+          td = number_to_currency gc.amount
+          td 
+            = time_ago_in_words(gc.created_at)
+            = " ago"
+  - else
+    h4 = link_to 'Buy a Gift Card', product_path(Spree::Product.gift_cards.first), class: 'button'
+      
 
-  table.order-summary 
-    thead
-      th Code
-      th Amount
-      th Purchased
-    - @user.gift_cards.active.each do |gc|
-      tr
-        td = gc.code 
-        td = number_to_currency gc.amount
-        td 
-          = time_ago_in_words(gc.created_at)
-          = " ago"
-    

@@ -1,7 +1,7 @@
 SpreeGiftCards
 ==============
 
-Introduction goes here.
+Adds the ability for user's to purchase gift cards.
 
 Installation
 ------------
@@ -36,4 +36,4 @@ Simply add this require statement to your spec_helper:
 require 'spree_gift_cards/factories'
 ```
 
-Copyright (c) 2015 [name of extension creator], released under the New BSD License
+Copyright (c) 2015 Jason Hazel, released under the New BSD License
