@@ -3,19 +3,25 @@
     = Spree.t(:my_gift_cards)
   = render partial: 'spree/users/redeem'
   div.clearfix
-  - if @user.gift_cards.active.count > 0 
+  - if @user.gift_cards.with_balance.count > 0 
     table.order-summary 
       thead
-        th Code
-        th Amount
+        / th Code
         th Purchased
-      - @user.gift_cards.active.each do |gc|
+        th Status
+        th Initial Balance
+        th Current Balance
+        th
+      - @user.gift_cards.with_balance.each do |gc|
         tr
-          td = gc.code 
-          td = number_to_currency gc.amount
           td 
             = time_ago_in_words(gc.created_at)
             = " ago"
+          td = gc.active ? 'Active' : 'Pending Approval'
+          td = number_to_currency gc.amount
+          td = number_to_currency gc.remaining
+          td = submit_tag 'Send', class: 'pull-right' unless gc.used?
+          
   - else
     h4 = link_to 'Buy a Gift Card', product_path(Spree::Product.gift_cards.first), class: 'button'
       

@@ -12,8 +12,9 @@ Spree::Order.class_eval do
           user.gift_cards << Spree::GiftCard.new({
             code: Spree::GiftCard.generate_code,
             amount: gc.price,
-            active: true,
-            order: self
+            active: false,
+            order: self,
+            remaining: gc.price
           })
         end
       end

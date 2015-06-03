@@ -1,0 +1,2 @@
+.gift-card-payment
+  = "Remaining balance: #{number_to_currency(Spree::GiftCard.balance(current_user))}"
