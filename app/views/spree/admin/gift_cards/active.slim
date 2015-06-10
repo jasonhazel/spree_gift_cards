@@ -1,35 +1,36 @@
 = render :partial => 'spree/admin/shared/configuration_menu'
 
 - content_for :page_title do 
-  = "#{Spree.t('gift_cards')} #{Spree.t('pending_approval')}"
+  = "#{Spree.t('active')}  #{Spree.t('gift_cards')}"
 
 - content_for :page_actions do 
   li = button_link_to Spree.t('new_gift_card'), new_admin_gift_card_path, icon: 'icon-plus', id: 'admin_gift_cards'
 
 - content_for :sub_menu do 
   ul.inline-menu id='sub_menu'
-    li.selected = link_to 'Pending Approval', admin_gift_cards_path
-    li = link_to 'Active', active_admin_gift_cards_path
+    li = link_to 'Pending Approval', admin_gift_cards_path
+    li.selected = link_to 'Active', active_admin_gift_cards_path
     li = link_to 'Products', products_admin_gift_cards_path
 
-- if @inactive_cards.empty?
-  p No Pending Gift Cards
+h2 Active Gift Cards
+- if @active_cards.empty?
+  p No Active Gift Cards
   br
-- else
+- else 
   table.index
     thead
       th Code
       th User
-      th Amount
+      th Initial Balance
+      th Remaining Balance
       th Created
     tbody
-      - @inactive_cards.each do |gc|
+      - @active_cards.each do |gc|
         tr
           td = gc.code
           td = link_to gc.user.email, edit_admin_user_path(gc.user)
-          td = number_to_currency gc.amount
+          td = number_to_currency gc.amount 
+          td = number_to_currency gc.remaining
           td 
             = time_ago_in_words gc.created_at 
             = ' ago'
-          td.actions
-            = link_to_with_icon('check', 'Approve', approve_admin_gift_card_path(gc),  { no_text: true, method: :post })

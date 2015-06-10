@@ -17,10 +17,11 @@
           td 
             = time_ago_in_words(gc.created_at)
             = " ago"
-          td = gc.active ? 'Active' : 'Pending Approval'
+          td = gc.status_text
           td = number_to_currency gc.amount
           td = number_to_currency gc.remaining
-          td = submit_tag 'Send', class: 'pull-right' unless gc.used?
+          td = link_to 'Send', account_transfer_path(gc), class: 'pull-right button' if !gc.used? && gc.active
+          / td = submit_tag 'Send', class: 'pull-right' if  !gc.used? && gc.active
           
   - else
     h4 = link_to 'Buy a Gift Card', product_path(Spree::Product.gift_cards.first), class: 'button'

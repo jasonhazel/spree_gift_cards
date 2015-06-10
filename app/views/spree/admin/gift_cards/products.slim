@@ -1,0 +1,24 @@
+= render :partial => 'spree/admin/shared/configuration_menu'
+
+- content_for :page_title do 
+  = Spree.t('gift_cards')
+
+- content_for :page_actions do 
+  li = button_link_to Spree.t('new_gift_card'), new_admin_gift_card_path, icon: 'icon-plus', id: 'admin_gift_cards'
+
+- content_for :sub_menu do 
+  ul.inline-menu id='sub_menu'
+    li = link_to 'Pending Approval', admin_gift_cards_path
+    li = link_to 'Active', active_admin_gift_cards_path
+    li.selected = link_to 'Products', products_admin_gift_cards_path
+
+h2 Associated Products
+table.index
+  thead
+    th Name
+    th Amount
+  tbody
+    - @gift_cards.each do |gc|
+      tr
+        td = link_to gc.name, edit_admin_product_path(gc)
+        td = number_to_currency gc.price 

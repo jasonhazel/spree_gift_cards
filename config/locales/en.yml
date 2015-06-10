@@ -7,4 +7,7 @@ en:
     gift_cards: "Gift Cards"
     listing_gift_cards: "Gift Cards"
     my_gift_cards: "My Gift Cards"
+    active: "Active"
+    pending_approval: "Pending Approval"
+    products: "Products"
 

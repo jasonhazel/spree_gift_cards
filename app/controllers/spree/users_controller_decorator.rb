@@ -3,25 +3,28 @@ Spree::UsersController.class_eval do
     @gift_card = Spree::GiftCard.find_by(code: params[:code])
     
     if @gift_card.nil?
-      redirect_to account_path, error: "Invalid Gift Card Code" and return
+      message = { error: "Invalid Gift Card Code" }
+    elsif @gift_card.user == current_user || @gift_card.used?
+      message = { error: "Gift Card already redeemed" }
+    else
+      @gift_card.update_attributes(user_id: current_user.id)
+      message = { notice: "Gift Card Redeemed" }
     end
-    
-    if @gift_card.user == current_user || @gift_card.used?
-      redirect_to account_path, error: "Gift Card already redeemed." and return
+
+    redirect_to account_path, message
+  end
+
+  def transfer_gift_card
+    @gift_card = Spree::GiftCard.find(params[:id])
+  end
+
+
+  def send_gift_card
+    @gift_card = Spree::GiftCard.find(params[:id])
+    if Spree::GiftCardMailer.send_gift_card(@gift_card, params[:recipient], current_user).deliver 
+      redirect_to account_path, notice: "Gift Card sent!"
+    else
+      redirect_to account_transfer_path(@gift_card), error: "Error sending Gift Card."
     end
-
-    # if @gift_card.nil?
-    #   redirect_to account_path, error: "Invalid Gift Card Code."
-    # else
-    #   spree_current_user.store_credits << Spree::StoreCredit.create({
-    #     amount: @gift_card.amount,
-    #     remaining_amount: @gift_card.amount,
-    #     reason: "Gift Card"
-    #   })
-
-    #   @gift_card.update_attributes({ active: false })
-
-    #   redirect_to account_path, notice: 'Gift Card balance credited to account.'
-    # end
   end
 end

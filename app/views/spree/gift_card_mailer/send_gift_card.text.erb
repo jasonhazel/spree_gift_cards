@@ -1,0 +1,9 @@
+You have been sent a gift card from <%= @from.email %>.  
+
+How to redeem your gift card:
+
+1) Login to your account at ReadyMadeRC.com (or create an account here: <%= signup_url %>)
+2) Go to your account details: <%= account_url %>
+3) Enter the code below in the gift card redemption form and click Redeem
+
+YOUR GIFT CARD CODE: <%= @gift_card.code %>

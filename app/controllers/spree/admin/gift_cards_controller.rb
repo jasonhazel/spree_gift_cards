@@ -1,11 +1,11 @@
 module Spree
-  class Admin::GiftCardsController < Admin::ResourceController
+  class Admin::GiftCardsController < Admin::BaseController
     before_action :collect_users, only: [ :new ]
 
 
     def index
-      @gift_cards = Spree::Product.gift_cards 
-      @active_cards = Spree::GiftCard.active
+
+
       @inactive_cards = Spree::GiftCard.inactive
     end
 
@@ -25,9 +25,26 @@ module Spree
       end
     end
 
+    def active
+      @active_cards = Spree::GiftCard.active
+    end
+
+    def products
+      @gift_cards = Spree::Product.gift_cards 
+    end
+
+    def approve 
+      @gift_card = Spree::GiftCard.find(params[:id])
+      if @gift_card.update_attributes(active: true)
+        redirect_to admin_gift_cards_path, notice: "Gift Card Approved"
+      else
+        redirect_to admin_gift_cards_path, error: "Error approving Gift Card"
+      end
+    end
+
     private
       def permitted_params
-        params.require(:gift_card).permit(:user_id, :amount)
+        params.require(:gift_card).permit(:user_id, :amount, :active)
       end
 
       def default_attributes

@@ -1,9 +1,24 @@
 Spree::Order.class_eval do 
-  # state_machine.before_transition to: :complete, do: :create_gift_cards 
+  state_machine.before_transition to: :complete, do: :process_payment
 
   register_update_hook :create_gift_cards
 
   has_many :gift_cards
+
+  def process_payment
+    gc_payment = payments.where(payment_method_id: Spree::PaymentMethod.find_by(name: 'Gift Card')).where(state: 'checkout')
+    unless gc_payment.empty?
+      gc_balance = user.gift_cards.active_with_balance.sum(:remaining)
+      gc_payment.first.update_attributes(amount: [gc_payment.first.amount, gc_balance].min)
+      gc_payment.first.payment_method.capture(gc_payment.first.amount * 100, nil, { customer_id: user.id, order: self })
+      # create line item
+      self.update!
+      return self.total == 0
+    end
+
+    true
+  end
+
 
   def create_gift_cards 
     if gift_cards.empty? && paid?

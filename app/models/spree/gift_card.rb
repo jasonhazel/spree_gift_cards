@@ -15,6 +15,11 @@ module Spree
       remaining != amount
     end
 
+    def status_text
+      return "Active" if active? && remaining > 0
+      return "Used" if active? && remaining == 0
+      return "Pending Approval" if !active?
+    end
 
     def consume(amount)
       self.remaining = self.remaining - amount
