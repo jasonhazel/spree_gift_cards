@@ -1,5 +1,5 @@
 module Spree
-  class Admin::GiftCardsController < Admin::BaseController
+  class Admin::GiftCardsController < Admin::ResourceController
     before_action :collect_users, only: [ :new ]
 
 
@@ -19,7 +19,7 @@ module Spree
     def create
       @gift_card = Spree::GiftCard.new(permitted_params.merge(default_attributes))
       if @gift_card.save
-        redirect_to admin_gift_cards_path
+        redirect_to active_admin_gift_cards_path
       else
         render :edit 
       end
