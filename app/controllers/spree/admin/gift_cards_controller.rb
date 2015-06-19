@@ -18,6 +18,7 @@ module Spree
 
     def create
       @gift_card = Spree::GiftCard.new(permitted_params.merge(default_attributes))
+      @gift_card.remaining = @gift_card.amount
       if @gift_card.save
         redirect_to active_admin_gift_cards_path
       else

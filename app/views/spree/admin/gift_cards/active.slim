@@ -30,7 +30,7 @@ h2 Active Gift Cards
           td = gc.code
           td = link_to gc.user.email, edit_admin_user_path(gc.user)
           td = number_to_currency gc.amount 
-          td = number_to_currency gc.remaining
+          td = number_to_currency(gc.remaining || gc.amount)
           td 
             = time_ago_in_words gc.created_at 
             = ' ago'
